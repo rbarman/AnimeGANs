@@ -1,4 +1,4 @@
-import torch.nn as 
+import torch.nn as nn
 
 class ConvBlock(nn.Module):
   '''2D Conv Block 
@@ -18,10 +18,10 @@ class ConvBlock(nn.Module):
   def forward(self,x):
     return self.main(x)
 
-class Descriminator(nn.Module):
+class Discriminator(nn.Module):
   
   def __init__(self,num_features):
-    super(Descriminator, self).__init__()
+    super(Discriminator, self).__init__()
 
     self.main = nn.Sequential(
         
