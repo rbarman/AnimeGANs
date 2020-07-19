@@ -1,3 +1,4 @@
+import torch
 '''
 Utils to move data to device
     - source -> https://jovian.ml/aakashns/04-feedforward-nn/v/16#C32
