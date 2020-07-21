@@ -12,7 +12,7 @@ class GANTrainer():
                , num_discriminator_feataures = 64
                ,latent_size = 100
                , lr=.0002
-               ,gen_dir = '/content/AnimeGANS/generated/'
+               ,gen_dir = '/content/AnimeGANs/generated/'
                ):
     
     self.device = get_default_device()
