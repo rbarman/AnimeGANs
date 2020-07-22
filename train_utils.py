@@ -1,3 +1,4 @@
+from datetime import datetime
 from my_modules import Discriminator, Generator
 from device_utils import get_default_device, DeviceDataLoader, to_device
 import torch
@@ -12,7 +13,7 @@ class GANTrainer():
                , num_discriminator_feataures = 64
                ,latent_size = 100
                , lr=.0002
-               ,gen_dir = '/content/AnimeGANs/generated/'
+               , base_dir = '/content/drive/My Drive/AnimeGANs/'
                ):
     
     self.device = get_default_device()
@@ -21,7 +22,15 @@ class GANTrainer():
     self.latent_size = latent_size
     self.num_generator_features = num_generator_features
     self.num_discriminator_feataures = num_discriminator_feataures
-    self.gen_dir = gen_dir
+    self.base_dir = base_dir
+
+    # create a folder for this session
+    self.session_folder = f"{base_dir}{datetime.now().strftime('%m%d%Y_%H%M%S')/}"
+    print(f'Saving training session data to {self.session_folder}')
+    os.makedirs(SESSION_FOLDER, exist_ok=True)
+    # gen_dir stores images that gets generated at end of each epoch
+    self.gen_dir = f'{self.session_folder}generated/'
+    os.mkdir(self.gen_dir)
 
     # set up Generator and Discriminators and put on device
     self.discriminator = Discriminator(num_features = self.num_generator_features)
@@ -51,20 +60,18 @@ class GANTrainer():
 
     return loss_fake.item()
 
-  def save_generated_samples(self,iter, gen_dir):
+  def save_generated_samples(self,iter):
     ''' Save generated images from Generator to disk
         - iter = training iteration number
         - This could be replaced with tensor board?
     '''
-
-    os.makedirs(gen_dir, exist_ok=True)
 
     noise = torch.randn(self.batch_size, self.latent_size, 1, 1, device=self.device)
     fake_images = self.generator(noise)
     fake_name = f'{iter}.png'
 
     save_image(make_grid(fake_images[:64], padding=2, normalize=True,nrow=8),
-              f'{gen_dir}{fake_name}')
+              f'{self.gen_dir}{fake_name}')
     
     print(f'Saving to {gen_dir}{fake_name}')
 
@@ -120,7 +127,7 @@ class GANTrainer():
       real_scores.append(real_score)
       fake_scores.append(fake_score)
       
-      self.save_generated_samples(epoch+iter_start, self.gen_dir)
+      self.save_generated_samples(epoch+iter_start)
 
       # Log losses & scores (last batch)
       print("Epoch [{}/{}], loss_g: {:.4f}, loss_d: {:.4f}, real_score: {:.4f}, fake_score: {:.4f}".format(
