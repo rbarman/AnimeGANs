@@ -27,7 +27,7 @@ class GANTrainer():
     # create a folder for this session
     self.session_folder = f"{base_dir}{datetime.now().strftime('%m%d%Y_%H%M%S')}/"
     print(f'Saving training session data to {self.session_folder}')
-    os.makedirs(SESSION_FOLDER, exist_ok=True)
+    os.makedirs(self.session_folder, exist_ok=True)
     # gen_dir stores images that gets generated at end of each epoch
     self.gen_dir = f'{self.session_folder}generated/'
     os.mkdir(self.gen_dir)
