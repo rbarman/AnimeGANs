@@ -27,7 +27,6 @@ class GANTrainer():
 
     # create a folder for this session
     self.session_folder = f"{base_dir}{datetime.now().strftime('%m%d%Y_%H%M%S')}/"
-    print(f'Saving training session data to {self.session_folder}')
     os.makedirs(self.session_folder, exist_ok=True)
     
     # gen_dir stores images that gets generated at end of each epoch
@@ -38,6 +37,10 @@ class GANTrainer():
     self.checkpoint_dir = f'{self.session_folder}checkpoints/'
     os.mkdir(self.checkpoint_dir)
 
+    print(f'Saving training session data to {self.session_folder}')
+    print(f'\t{self.gen_dir} stores generated images')
+    print(f'\t{self.checkpoint_dir} stores checkpoint weights')
+    
     # set up Generator and Discriminators and put on device
     self.discriminator = Discriminator(num_features = self.num_generator_features)
     self.generator = Generator(latent_vector_len = self.latent_size,num_features = self.num_discriminator_feataures)
@@ -76,7 +79,7 @@ class GANTrainer():
     fake_path = f'{self.gen_dir}{name}.png'
 
     save_image(make_grid(fake_images[:64], padding=2, normalize=True,nrow=8),fake_path)
-    print(f'Saving to {fake_path}')
+    print(f'Saved generated images to {fake_path}')
 
   def train_discriminator(self,images):
 
@@ -144,7 +147,7 @@ class GANTrainer():
     ''' Save generator and discrimniator models and weights to self.checkpoint_dir
       - specifying the last finished epoch number. 
     '''
-    
+    save_path = f'{self.checkpoint_dir}epoch{self.total_epoch_count}.pth'
     torch.save({
                 'epoch': self.total_epoch_count,
                 'discriminator_state_dict': self.discriminator.state_dict(),
@@ -152,4 +155,5 @@ class GANTrainer():
                 'generator_state_dict': self.generator.state_dict(),
                 'optimizerG_state_dict': self.optimizerG.state_dict()
                 }
-               , f'{self.checkpoint_dir}epoch{self.total_epoch_count}.pth')
+               , save_path)
+    print(f'Saved model and optimzer weights to {save_path}')
