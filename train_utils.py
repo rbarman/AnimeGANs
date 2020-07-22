@@ -68,11 +68,11 @@ class GANTrainer():
 
     noise = torch.randn(self.batch_size, self.latent_size, 1, 1, device=self.device)
     fake_images = self.generator(noise)
+    fake_path = f'{self.gen_dir}{iter}.png'
 
-    save_image(make_grid(fake_images[:64], padding=2, normalize=True,nrow=8),
-              f'{self.gen_dir}{fake_name}')
+    save_image(make_grid(fake_images[:64], padding=2, normalize=True,nrow=8),fake_path)
     
-    print(f'Saving to {self.gen_dir}{iter}.png')
+    print(f'Saving to {fake_path}')
 
   def train_discriminator(self,images):
 
