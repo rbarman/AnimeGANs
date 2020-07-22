@@ -23,6 +23,7 @@ class GANTrainer():
     self.num_generator_features = num_generator_features
     self.num_discriminator_feataures = num_discriminator_feataures
     self.base_dir = base_dir
+    self.total_epoch_count = 0
 
     # create a folder for this session
     self.session_folder = f"{base_dir}{datetime.now().strftime('%m%d%Y_%H%M%S')}/"
@@ -60,18 +61,16 @@ class GANTrainer():
 
     return loss_fake.item()
 
-  def save_generated_samples(self,iter):
-    ''' Save generated images from Generator to disk
-        - iter = training iteration number
+  def save_generated_samples(self, name):
+    ''' Save generated images from Generator to self.gen_dir
         - This could be replaced with tensor board?
     '''
 
     noise = torch.randn(self.batch_size, self.latent_size, 1, 1, device=self.device)
     fake_images = self.generator(noise)
-    fake_path = f'{self.gen_dir}{iter}.png'
+    fake_path = f'{self.gen_dir}{name}.png'
 
     save_image(make_grid(fake_images[:64], padding=2, normalize=True,nrow=8),fake_path)
-    
     print(f'Saving to {fake_path}')
 
   def train_discriminator(self,images):
@@ -107,6 +106,8 @@ class GANTrainer():
 
   def train(self,num_epochs, iter_start=1):
 
+    self.total_epoch_count = self.total_epoch_count + 1
+   
     losses_g = []
     losses_d = []
     real_scores = []
@@ -126,7 +127,7 @@ class GANTrainer():
       real_scores.append(real_score)
       fake_scores.append(fake_score)
       
-      self.save_generated_samples(epoch+iter_start)
+      self.save_generated_samples(self.total_epoch_count)
 
       # Log losses & scores (last batch)
       print("Epoch [{}/{}], loss_g: {:.4f}, loss_d: {:.4f}, real_score: {:.4f}, fake_score: {:.4f}".format(
