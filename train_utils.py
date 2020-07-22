@@ -29,9 +29,14 @@ class GANTrainer():
     self.session_folder = f"{base_dir}{datetime.now().strftime('%m%d%Y_%H%M%S')}/"
     print(f'Saving training session data to {self.session_folder}')
     os.makedirs(self.session_folder, exist_ok=True)
+    
     # gen_dir stores images that gets generated at end of each epoch
     self.gen_dir = f'{self.session_folder}generated/'
     os.mkdir(self.gen_dir)
+    
+    # checkpoint_dir stores weights called on each checkpoint
+    self.checkpoint_dir = f'{self.session_folder}checkpoints/'
+    os.mkdir(self.checkpoint_dir)
 
     # set up Generator and Discriminators and put on device
     self.discriminator = Discriminator(num_features = self.num_generator_features)
@@ -134,3 +139,17 @@ class GANTrainer():
           epoch+1, num_epochs, loss_g, loss_d, real_score, fake_score))
       
     return losses_g, losses_d, real_scores, fake_scores
+  
+  def save_checkpoint(self):
+    ''' Save generator and discrimniator models and weights to self.checkpoint_dir
+      - specifying the last finished epoch number. 
+    '''
+    
+    torch.save({
+                'epoch': self.total_epoch_count,
+                'discriminator_state_dict': self.discriminator.state_dict(),
+                'optimizerD_state_dict': self.optimizerD.state_dict(),
+                'generator_state_dict': self.generator.state_dict(),
+                'optimizerG_state_dict': self.optimizerG.state_dict()
+                }
+               , f'{self.checkpoint_dir}epoch{self.total_epoch_count}.pth')
