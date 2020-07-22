@@ -114,14 +114,13 @@ class GANTrainer():
 
   def train(self,num_epochs, iter_start=1):
 
-    self.total_epoch_count = self.total_epoch_count + 1
-   
     losses_g = []
     losses_d = []
     real_scores = []
     fake_scores = []
     
     for epoch in range(num_epochs):
+      self.total_epoch_count = self.total_epoch_count + 1
       for images, _ in tqdm(self.train_dl):
 
         # Train discriminator
