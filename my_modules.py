@@ -67,8 +67,8 @@ class ConvTransposeBlock(nn.Module):
 			nn.BatchNorm2d(out_channels),
 			nn.ReLU(True),
 		)
-		def forward(self,x):
-			return self.main(x)
+	def forward(self,x):
+		return self.main(x)
 
 class Generator(nn.Module):
 
@@ -97,7 +97,7 @@ class Generator(nn.Module):
 			nn.ConvTranspose2d( num_features, 3, 4, 2, 1, bias=False),
 			# OUTPUT: bs, 3, 64, 64
 			nn.Tanh()
-	)
+		)
 
 	def forward(self,img_batch):
 		return self.main(img_batch)
