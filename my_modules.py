@@ -1,7 +1,7 @@
 import torch.nn as nn
 
 class ConvBlock(nn.Module):
-  	'''2D Conv Block 
+	'''2D Conv Block 
 		- out_channels = 2 * in_channels
 		- halves filter dimensions '''
 
@@ -19,7 +19,7 @@ class ConvBlock(nn.Module):
 		return self.main(x)
 
 class Discriminator(nn.Module):
-  
+
 	def __init__(self,num_features):
 		super(Discriminator, self).__init__()
 
@@ -74,7 +74,7 @@ class Generator(nn.Module):
 
 	def __init__(self, latent_vector_len, num_features):
 		super(Generator, self).__init__()
-		
+
 		self.latent_vector_len = latent_vector_len
 		self.vector_len = vector_len
 		self.main = nn.Sequential(
