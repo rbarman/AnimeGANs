@@ -152,7 +152,6 @@ class GANTrainer():
 			'optimizerD_state_dict': self.optimizerD.state_dict(),
 			'generator_state_dict': self.generator.state_dict(),
 			'optimizerG_state_dict': self.optimizerG.state_dict()
-			'session_dir':self.session_dir
 		}
 		, save_path)
 		print(f'Saved model and optimzer weights to {save_path}')
