@@ -25,6 +25,11 @@ class GANTrainer():
 		self.base_dir = base_dir
 		self.total_epoch_count = 0
 
+		self.generator = generator
+		self.discriminator = discriminator
+		self.optimizerG = optimizerG
+		self.optimizerD = optimizerD
+
 		# brand new training session, so create new folders to store run data
 		if prev_session_dir is None:
 
