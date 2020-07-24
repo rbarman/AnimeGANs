@@ -59,7 +59,7 @@ class GANTrainer():
 		self.generator.zero_grad()
 
 		# create fake images from the generator
-		noise = torch.randn(self.batch_size, self.discriminator.latent_vector_len, 1, 1, device=self.device)
+		noise = torch.randn(self.batch_size, self.generator.latent_vector_len, 1, 1, device=self.device)
 		fake_images = self.generator(noise)
 
 		# pass fake images through discriminator
@@ -77,7 +77,7 @@ class GANTrainer():
 		''' Save generated images from Generator to self.gen_dir
 		    - This could be replaced with tensor board?'''
 
-		noise = torch.randn(self.batch_size, self.discriminator.latent_vector_len, 1, 1, device=self.device)
+		noise = torch.randn(self.batch_size, self.generator.latent_vector_len, 1, 1, device=self.device)
 		fake_images = self.generator(noise)
 		fake_path = f'{self.gen_dir}{name}.png'
 
@@ -95,7 +95,7 @@ class GANTrainer():
 		loss_real = F.binary_cross_entropy(predictions_real, labels)
 
 		# create fake images from the generator
-		noise = torch.randn(images.shape[0], self.discriminator.latent_vector_len, 1, 1, device=self.device)
+		noise = torch.randn(images.shape[0], self.generator.latent_vector_len, 1, 1, device=self.device)
 		fake_images = self.generator(noise)
 
 		# pass through fake images
