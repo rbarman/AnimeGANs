@@ -14,7 +14,6 @@ class GANTrainer():
 		, discriminator
 		, optimizerG
 		, optimizerD
-		, lr=.0002
 		, prev_session_dir = None
 		, base_dir = '/content/drive/My Drive/AnimeGANs/'
 		):
