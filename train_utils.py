@@ -67,7 +67,7 @@ class GANTrainer():
 		loss_fake.backward()
 		self.optimizerG.step()
 
-	return loss_fake.item()
+		return loss_fake.item()
 
 	def save_generated_samples(self, name):
 		''' Save generated images from Generator to self.gen_dir
