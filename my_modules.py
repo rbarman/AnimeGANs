@@ -76,7 +76,7 @@ class Generator(nn.Module):
 		super(Generator, self).__init__()
 
 		self.latent_vector_len = latent_vector_len
-		self.vector_len = vector_len
+		self.num_features = num_features
 		self.main = nn.Sequential(
 			# INPUT: bs, 100, 1, 1
 			# vector with langth latent_vector_len
